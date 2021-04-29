@@ -11,10 +11,10 @@ class Item:
         self.item_value = item_value
 
     def getItem_weight(self):
-        return self.item_weight
+        return int(self.item_weight)
 
     def getItem_value(self):
-        return self.item_value
+        return int(self.item_value)
 
 
 #=========================================== Backpack ===========================================#
@@ -23,7 +23,7 @@ class Backpack:
         self.weight = weight
 
     def getWeight(self):
-        return self.weight
+        return int(self.weight)
 
     def recursive(self, value, weight, item_list_size, capacity):
         if (item_list_size == 0 or capacity == 0):
@@ -56,8 +56,35 @@ class Backpack:
 
         return self.recursive(value, weight, item_list_size, capacity)
 
-    def insertBottomUp(self):
-        pass
+    def insertBottomUp(self, item_list):
+
+        M = [[0] * (self.getWeight() + 1)]
+
+        for i, item in enumerate(item_list, start=1):
+            M.append([0] * (self.getWeight() + 1))
+
+            for w in range(1, self.getWeight() + 1):
+                if item.getItem_weight() <= w:
+                    if M[i - 1][w] > M[i - 1][
+                            w - item.getItem_weight()] + item.getItem_value():
+                        M[i][w] = M[i - 1][w]
+                    else:
+                        M[i][w] = M[i - 1][
+                            w - item.getItem_weight()] + item.getItem_value()
+                else:
+                    M[i][w] = M[i - 1][w]
+
+        i, m = len(item_list), self.getWeight()
+        output = []
+
+        while m > 0:
+            if M[i][m] != M[i - 1][m]:
+                output.append(item_list[i - 1])
+                m = m - item_list[i - 1].getItem_weight()
+
+            i -= 1
+
+        return M[-1][-1]
 
 
 #=========================================== Main ===========================================#
@@ -79,7 +106,7 @@ entryList = [
     'mochila20000.in', 'mochila100000.in'
 ]
 
-entry = entryList[0]
+entry = entryList[1]
 text = open(f'{folder}\\{entry}', 'r')
 text = text.read()
 
@@ -88,11 +115,22 @@ backpack = Backpack(text[0])
 del text[0]
 item_list = createListOfItems(text)
 
+# POR RECURSÃO
 start = timeit.default_timer()
 value_max = backpack.insertRecursive(item_list)
 end = timeit.default_timer()
 
 print(
-    f'Mochila Recursiva: arquivo -> {entry}, pode levar R${value_max},00 em itens'
+    f'\nMochila Recursiva: arquivo -> {entry}, pode levar R${value_max},00 em itens'
+)
+print('Tempo de execução: %f segundos' % (end - start))
+
+# POR PROGRAMAÇÃO DINÂMICA
+start = timeit.default_timer()
+value_max = backpack.insertBottomUp(item_list)
+end = timeit.default_timer()
+
+print(
+    f'\nMochila Bottom Up: arquivo -> {entry}, pode levar R${value_max},00 em itens'
 )
 print('Tempo de execução: %f segundos' % (end - start))
