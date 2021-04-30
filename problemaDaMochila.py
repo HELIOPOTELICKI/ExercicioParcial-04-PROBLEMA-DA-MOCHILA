@@ -34,12 +34,13 @@ class Backpack:
                 return self.recursive(value, weight, item_list_size - 1,
                                       capacity)
             else:
-                return max(
-                    value[item_list_size - 1] +
-                    self.recursive(value, weight, item_list_size - 1,
-                                   capacity - weight[item_list_size - 1]),
-                    self.recursive(value, weight, item_list_size - 1,
-                                   capacity))
+                use = value[item_list_size - 1] + self.recursive(
+                    value, weight, item_list_size - 1,
+                    capacity - weight[item_list_size - 1])
+
+                doNotUse = self.recursive(value, weight, item_list_size - 1,
+                                          capacity)
+                return max(use, doNotUse)
 
     def insertRecursive(self, item_list):
         if (len(item_list) == 0):
@@ -106,7 +107,8 @@ entryList = [
     'mochila20000.in', 'mochila100000.in'
 ]
 
-entry = entryList[1]
+entry = entryList[0]
+
 text = open(f'{folder}\\{entry}', 'r')
 text = text.read()
 
