@@ -111,6 +111,7 @@ entryList = [
     'mochila20000.in', 'mochila100000.in'
 ]
 
+# Define o arquivo de entrada [0 - 5]
 entry = entryList[0]
 
 text = open(f'{folder}\\{entry}', 'r')
@@ -119,6 +120,7 @@ text = text.read()
 text = text.splitlines()
 backpack = Backpack(text[0])
 del text[0]
+
 item_list = createListOfItems(text)
 
 # POR RECURSÃO
