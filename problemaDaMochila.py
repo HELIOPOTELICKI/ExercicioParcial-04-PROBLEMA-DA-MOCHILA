@@ -112,7 +112,7 @@ entryList = [
 ]
 
 # Define o arquivo de entrada [0 - 5]
-entry = entryList[0]
+entry = entryList[1]
 
 text = open(f'{folder}\\{entry}', 'r')
 text = text.read()
@@ -123,16 +123,6 @@ del text[0]
 
 item_list = createListOfItems(text)
 
-# POR RECURSÃO
-start = timeit.default_timer()
-value_max = backpack.insertRecursive(item_list)
-end = timeit.default_timer()
-
-print(
-    f'\nMochila Recursiva: arquivo -> {entry}, pode levar R${value_max},00 em itens'
-)
-print('Tempo de execução: %f segundos' % (end - start))
-
 # POR PROGRAMAÇÃO DINÂMICA
 start = timeit.default_timer()
 value_max = backpack.insertBottomUp(item_list)
@@ -140,5 +130,15 @@ end = timeit.default_timer()
 
 print(
     f'\nMochila Bottom Up: arquivo -> {entry}, pode levar R${value_max},00 em itens'
+)
+print('Tempo de execução: %f segundos' % (end - start))
+
+# POR RECURSÃO
+start = timeit.default_timer()
+value_max = backpack.insertRecursive(item_list)
+end = timeit.default_timer()
+
+print(
+    f'\nMochila Recursiva: arquivo -> {entry}, pode levar R${value_max},00 em itens'
 )
 print('Tempo de execução: %f segundos' % (end - start))
