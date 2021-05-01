@@ -59,33 +59,37 @@ class Backpack:
 
     def insertBottomUp(self, item_list):
 
-        M = [[0] * (self.getWeight() + 1)]
+        backpack = [[0] * (self.getWeight() + 1)]
 
         for i, item in enumerate(item_list, start=1):
-            M.append([0] * (self.getWeight() + 1))
+            backpack.append([0] * (self.getWeight() + 1))
 
-            for w in range(1, self.getWeight() + 1):
-                if item.getItem_weight() <= w:
-                    if M[i - 1][w] > M[i - 1][
-                            w - item.getItem_weight()] + item.getItem_value():
-                        M[i][w] = M[i - 1][w]
+            for weight in range(1, self.getWeight() + 1):
+                if item.getItem_weight() <= weight:
+                    if backpack[i - 1][weight] > backpack[i - 1][
+                            weight -
+                            item.getItem_weight()] + item.getItem_value():
+                        backpack[i][weight] = backpack[i - 1][weight]
                     else:
-                        M[i][w] = M[i - 1][
-                            w - item.getItem_weight()] + item.getItem_value()
+                        backpack[i][weight] = backpack[i - 1][
+                            weight -
+                            item.getItem_weight()] + item.getItem_value()
                 else:
-                    M[i][w] = M[i - 1][w]
+                    backpack[i][weight] = backpack[i - 1][weight]
 
-        i, m = len(item_list), self.getWeight()
+        i, backpackCapacity = len(item_list), self.getWeight()
         output = []
 
-        while m > 0:
-            if M[i][m] != M[i - 1][m]:
+        while backpackCapacity > 0:
+            if backpack[i][backpackCapacity] != backpack[i -
+                                                         1][backpackCapacity]:
                 output.append(item_list[i - 1])
-                m = m - item_list[i - 1].getItem_weight()
+                backpackCapacity = backpackCapacity - item_list[
+                    i - 1].getItem_weight()
 
             i -= 1
 
-        return M[-1][-1]
+        return backpack[-1][-1]
 
 
 #=========================================== Main ===========================================#
