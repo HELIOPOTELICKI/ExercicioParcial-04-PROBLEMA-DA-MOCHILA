@@ -1,3 +1,9 @@
+'''
+EXERCÍCIO PARCIAL 04 – PROBLEMA DA MOCHILA
+Dupla: Hélio Potelicki e Pedro Henrique Roweder
+
+Tabela de comparação: https://uploaddeimagens.com.br/images/003/222/639/full/Compara%C3%A7%C3%A3o.png?1619913640
+'''
 import timeit
 import sys
 
@@ -107,23 +113,28 @@ def createListOfItems(text):
 
 folder = 'entry'
 entryList = [
-    'Teste.in', 'mochila1000.in', 'mochila5000.in', 'mochila10000.in',
-    'mochila20000.in', 'mochila100000.in'
+    'mochila10.in',  # 0
+    'mochila100.in',  # 1 
+    'mochila500.in',  # 2
+    'mochila1000.in',  # 3 
+    'mochila5000.in',  # 4 
+    'mochila10000.in',  # 5 
+    'mochila20000.in',  # 6 
+    'mochila100000.in'  # 7
 ]
 
-# Define o arquivo de entrada [0 - 5]
-entry = entryList[1]
+# Define o arquivo de entrada [0 - 7]
+entry = entryList[0]
 
 text = open(f'{folder}\\{entry}', 'r')
 text = text.read()
-
 text = text.splitlines()
 backpack = Backpack(text[0])
 del text[0]
 
 item_list = createListOfItems(text)
 
-# POR PROGRAMAÇÃO DINÂMICA
+#=========================================== Bottom Up ===========================================#
 start = timeit.default_timer()
 value_max = backpack.insertBottomUp(item_list)
 end = timeit.default_timer()
@@ -133,7 +144,7 @@ print(
 )
 print('Tempo de execução: %f segundos' % (end - start))
 
-# POR RECURSÃO
+#=========================================== Recursão ===========================================#
 start = timeit.default_timer()
 value_max = backpack.insertRecursive(item_list)
 end = timeit.default_timer()
